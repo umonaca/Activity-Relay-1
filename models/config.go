@@ -19,6 +19,7 @@ type RelayConfig struct {
 	domain          *url.URL
 	redisClient     *redis.Client
 	redisURL        string
+	serverBind      string
 	serviceName     string
 	serviceSummary  string
 	serviceIconURL  *url.URL
@@ -58,11 +59,14 @@ func NewRelayConfig() (*RelayConfig, error) {
 		return nil, errors.New("Redis Connection Test: " + err.Error())
 	}
 
+	serverBind := viper.GetString("RELAY_BIND")
+
 	return &RelayConfig{
 		actorKey:        privateKey,
 		domain:          domain,
 		redisClient:     redisClient,
 		redisURL:        redisURL,
+		serverBind:      serverBind,
 		serviceName:     viper.GetString("RELAY_SERVICENAME"),
 		serviceSummary:  viper.GetString("RELAY_SUMMARY"),
 		serviceIconURL:  iconURL,
@@ -94,4 +98,15 @@ func readPrivateKeyRSA(keyPath string) (*rsa.PrivateKey, error) {
 		return nil, err
 	}
 	return privateKey, nil
+}
+
+func generatePublicKeyPEMString(publicKey *rsa.PublicKey) string {
+	publicKeyByte := x509.MarshalPKCS1PublicKey(publicKey)
+	publicKeyPem := pem.EncodeToMemory(
+		&pem.Block{
+			Type:  "RSA PUBLIC KEY",
+			Bytes: publicKeyByte,
+		},
+	)
+	return string(publicKeyPem)
 }
