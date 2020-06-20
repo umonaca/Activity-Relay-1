@@ -2,7 +2,8 @@
 
 ## Yet another powerful customizable ActivityPub relay server written in Go.
 
-[![codecov](https://codecov.io/gh/yukimochi/Activity-Relay/branch/project_improve/graph/badge.svg)](https://codecov.io/gh/yukimochi/Activity-Relay)
+[![GitHub Actions](https://github.com/yukimochi/Activity-Relay/workflows/Test/badge.svg?branch=project_improve)](https://github.com/yukimochi/Activity-Relay/tree/project_improve)
+[![codecov](https://codecov.io/gh/yukimochi/Activity-Relay/branch/project_improve/graph/badge.svg)](https://codecov.io/gh/yukimochi/Activity-Relay/branch/project_improve)
 
 ![Connect to Fediverse, join Fediverse.](misc/title.png)
 
@@ -85,7 +86,7 @@ Thank you for your support.
 
 ### IDE Support
 
-![Jetbrains Logo](misc/jetbrains.svg)
+[![Jetbrains Logo](misc/jetbrains.svg)](https://www.jetbrains.com/?from=Activity-Relay)
 
 [JetBrains Free License Programs for Open Source](https://www.jetbrains.com/?from=Activity-Relay)
 
