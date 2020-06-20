@@ -14,7 +14,7 @@ jobs:
         run: |
           go version
           sed --in-place "s/localhost:6379/localhost:$REDIS_PORT/" misc/test/config.yml
-          go test -coverprofile=coverage.txt -p 1 . ./api ./command ./deliver ./models
+          go test -coverprofile=coverage.txt -v -p 1 . ./api ./command ./deliver ./models
           bash <(curl -s https://codecov.io/bash)
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
