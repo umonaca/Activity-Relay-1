@@ -7,7 +7,7 @@ import (
 )
 
 func handleResourceRequest(w http.ResponseWriter, r *http.Request) {
-	if r.Method != "GET" {
+	if r.Method != "GET" && r.Method != "HEAD" {
 		w.WriteHeader(400)
 		w.Write(nil)
 
@@ -55,5 +55,9 @@ func handleResourceRequest(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(200)
-	w.Write(body)
+	if r.Method == "HEAD" {
+		w.Write(nil)
+	} else {
+		w.Write(body)
+	}
 }
