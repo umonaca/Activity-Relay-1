@@ -5,6 +5,7 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"errors"
+	"fmt"
 	"github.com/RichardKnop/machinery/v1"
 	"github.com/RichardKnop/machinery/v1/config"
 	"github.com/go-redis/redis"
@@ -72,6 +73,26 @@ func NewRelayConfig() (*RelayConfig, error) {
 		serviceIconURL:  iconURL,
 		serviceImageURL: imageURL,
 	}, nil
+}
+
+// ServerBind: API Server's bind interface definition.
+func (relayConfig RelayConfig) ServerBind() string {
+	return relayConfig.serverBind
+}
+
+// ServerBind: API Server's bind interface definition.
+func (relayConfig RelayConfig) ServerHostname() *url.URL {
+	return relayConfig.domain
+}
+
+func (relayConfig RelayConfig) DumpWelcomeMessage(moduleName string) string {
+	return fmt.Sprintf(`Welcome to YUKIMOCHI Activity-Relay [Project-Improve] - %s
+ - Configuration
+RELAY NAME   : %s
+RELAY DOMAIN : %s
+REDIS URL    : %s
+BIND ADDRESS : %s
+`, moduleName, relayConfig.serviceName, relayConfig.domain.Host, relayConfig.redisURL, relayConfig.serverBind)
 }
 
 // NewMachineryServer create Redis backed Machinery Server from RelayConfig.

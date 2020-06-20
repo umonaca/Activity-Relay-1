@@ -69,7 +69,13 @@ func buildCommand() *cobra.Command {
 		Long:  "Activity-Relay API Server is providing WebFinger API, ActivityPub inbox",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			initConfig(cmd, args)
-			return api.Entrypoint(globalConfig)
+			fmt.Println(globalConfig.DumpWelcomeMessage("API Server"))
+			err := api.Entrypoint(globalConfig)
+			if err != nil {
+				fmt.Println(err.Error())
+				os.Exit(1)
+			}
+			return nil
 		},
 	}
 
@@ -79,7 +85,13 @@ func buildCommand() *cobra.Command {
 		Long:  "Activity-Relay Job Worker is providing ActivityPub Activity deliverer",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			initConfig(cmd, args)
-			return deliver.Entrypoint(globalConfig)
+			fmt.Println(globalConfig.DumpWelcomeMessage("Job Worker"))
+			err := deliver.Entrypoint(globalConfig)
+			if err != nil {
+				fmt.Println(err.Error())
+				os.Exit(1)
+			}
+			return nil
 		},
 	}
 

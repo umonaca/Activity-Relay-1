@@ -67,7 +67,7 @@ func NewActivityPubActorFromSelfKey(globalConfig *RelayConfig) ActivityPubActor 
 	return newActor
 }
 
-// Webfinger is webfinger response resource.
+// Webfinger is webfinger resource for .well-known service discovery.
 // reference: https://tools.ietf.org/html/rfc7033
 type Webfinger struct {
 	Subject string `json:"subject,omitempty"`
@@ -76,6 +76,49 @@ type Webfinger struct {
 		Type string `json:"type,omitempty"`
 		Href string `json:"href,omitempty"`
 	} `json:"links,omitempty"`
+}
+
+// NewWebfingerFromActor create webfinger object for actor belongs to relay server.
+func NewWebfingerFromActor(activityPubActor ActivityPubActor, hostname string) Webfinger {
+	return Webfinger{
+		Subject: "acct:" + activityPubActor.PreferredUsername + "@" + hostname,
+		Links: []struct {
+			Rel  string `json:"rel,omitempty"`
+			Type string `json:"type,omitempty"`
+			Href string `json:"href,omitempty"`
+		}{{
+			Rel:  "self",
+			Type: "application/activity+json",
+			Href: activityPubActor.ID,
+		}},
+	}
+}
+
+// WellKnownNodeinfo is nodeinfo links for .well-known service discovery.
+type WellKnownNodeinfo struct {
+	Links []struct {
+		Rel  string `json:"rel"`
+		Href string `json:"href"`
+	} `json:"links"`
+}
+
+func NewWellKnownNodeinfo(hostname string) WellKnownNodeinfo {
+	link := struct {
+		Rel  string `json:"rel"`
+		Href string `json:"href"`
+	}{
+		Rel:  "http://nodeinfo.diaspora.software/ns/schema/2.1",
+		Href: "https://" + hostname + "/nodeinfo/2.1",
+	}
+
+	return WellKnownNodeinfo{
+		[]struct {
+			Rel  string `json:"rel"`
+			Href string `json:"href"`
+		}{
+			link,
+		},
+	}
 }
 
 // Nodeinfo is server information about distributed social networks.
