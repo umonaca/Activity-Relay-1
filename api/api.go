@@ -12,6 +12,7 @@ var (
 	machineryServer *machinery.Server
 	selfActor       models.ActivityPubActor
 	selfHostname    *url.URL
+	relayState      *models.RelayState
 )
 
 func Entrypoint(globalConfig *models.RelayConfig) error {
@@ -23,6 +24,12 @@ func Entrypoint(globalConfig *models.RelayConfig) error {
 	}
 	selfActor = models.NewActivityPubActorFromSelfKey(globalConfig)
 	selfHostname = globalConfig.ServerHostname()
+
+	relayState, err = models.NewRelayState(globalConfig)
+	err = relayState.StateRefreshListener(nil)
+	if err != nil {
+		return err
+	}
 
 	registResourceHandlers()
 

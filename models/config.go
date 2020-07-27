@@ -2,15 +2,12 @@ package models
 
 import (
 	"crypto/rsa"
-	"crypto/x509"
-	"encoding/pem"
 	"errors"
 	"fmt"
 	"github.com/RichardKnop/machinery/v1"
 	"github.com/RichardKnop/machinery/v1/config"
 	"github.com/go-redis/redis"
 	"github.com/spf13/viper"
-	"io/ioutil"
 	"net/url"
 )
 
@@ -76,16 +73,16 @@ func NewRelayConfig() (*RelayConfig, error) {
 }
 
 // ServerBind: API Server's bind interface definition.
-func (relayConfig RelayConfig) ServerBind() string {
+func (relayConfig *RelayConfig) ServerBind() string {
 	return relayConfig.serverBind
 }
 
 // ServerBind: API Server's bind interface definition.
-func (relayConfig RelayConfig) ServerHostname() *url.URL {
+func (relayConfig *RelayConfig) ServerHostname() *url.URL {
 	return relayConfig.domain
 }
 
-func (relayConfig RelayConfig) DumpWelcomeMessage(moduleName string) string {
+func (relayConfig *RelayConfig) DumpWelcomeMessage(moduleName string) string {
 	return fmt.Sprintf(`Welcome to YUKIMOCHI Activity-Relay [Project-Improve] - %s
  - Configuration
 RELAY NAME   : %s
@@ -106,28 +103,4 @@ func NewMachineryServer(globalConfig *RelayConfig) (*machinery.Server, error) {
 	newServer, err := machinery.NewServer(cnf)
 
 	return newServer, err
-}
-
-func readPrivateKeyRSA(keyPath string) (*rsa.PrivateKey, error) {
-	file, err := ioutil.ReadFile(keyPath)
-	if err != nil {
-		return nil, err
-	}
-	decoded, _ := pem.Decode(file)
-	privateKey, err := x509.ParsePKCS1PrivateKey(decoded.Bytes)
-	if err != nil {
-		return nil, err
-	}
-	return privateKey, nil
-}
-
-func generatePublicKeyPEMString(publicKey *rsa.PublicKey) string {
-	publicKeyByte := x509.MarshalPKCS1PublicKey(publicKey)
-	publicKeyPem := pem.EncodeToMemory(
-		&pem.Block{
-			Type:  "RSA PUBLIC KEY",
-			Bytes: publicKeyByte,
-		},
-	)
-	return string(publicKeyPem)
 }
