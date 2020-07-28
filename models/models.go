@@ -1,6 +1,3 @@
-/*
-Models provide struct for config and type definition for ActivityPub, Nodeinfo, Webfinger.
-*/
 package models
 
 // ActivityPubActor is compacted ActivityPub actor resource.

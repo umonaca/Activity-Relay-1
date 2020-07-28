@@ -72,16 +72,17 @@ func NewRelayConfig() (*RelayConfig, error) {
 	}, nil
 }
 
-// ServerBind: API Server's bind interface definition.
+// ServerBind is API Server's bind interface definition.
 func (relayConfig *RelayConfig) ServerBind() string {
 	return relayConfig.serverBind
 }
 
-// ServerBind: API Server's bind interface definition.
+// ServerHostname is API Server's hostname definition.
 func (relayConfig *RelayConfig) ServerHostname() *url.URL {
 	return relayConfig.domain
 }
 
+// DumpWelcomeMessage provide build and config information string.
 func (relayConfig *RelayConfig) DumpWelcomeMessage(moduleName string) string {
 	return fmt.Sprintf(`Welcome to YUKIMOCHI Activity-Relay [Project-Improve] - %s
  - Configuration

@@ -7,6 +7,8 @@ import (
 	"strings"
 )
 
+// RelayState is local cache of permanent state information.
+// All information are stored redis.
 type RelayState struct {
 	redisClient    *redis.Client
 	relayOptions   relayOptions   `json:"relayConfig"`
@@ -15,6 +17,7 @@ type RelayState struct {
 	blockedDomains []string       `json:"blockedDomains"`
 }
 
+// RelayOptionsIota is flags for relay options.
 type RelayOptionsIota uint
 
 const (
@@ -29,6 +32,7 @@ type relayOptions struct {
 	createAsAnnounce bool `json:"createAsAnnounce"`
 }
 
+// DomainConfigTypeIota is flags for limited domain subscribe.
 type DomainConfigTypeIota uint
 
 const (
